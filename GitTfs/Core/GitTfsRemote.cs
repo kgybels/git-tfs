@@ -318,9 +318,8 @@ namespace Sep.Git.Tfs.Core
         public IFetchResult FetchWithMerge(long mergeChangesetId, bool stopOnFailMergeCommit = false, params string[] parentCommitsHashes)
         {
             var fetchResult = new FetchResult{IsSuccess = true};
-            var fetchedChangesets = FetchChangesets().ToList();
-            fetchResult.NewChangesetCount = fetchedChangesets.Count;
-            foreach (var changeset in fetchedChangesets)
+            fetchResult.NewChangesetCount = 0;
+            foreach (var changeset in FetchChangesets())
             {
                 AssertTemporaryIndexClean(MaxCommitHash);
                 var log = Apply(MaxCommitHash, changeset);
@@ -386,6 +385,8 @@ namespace Sep.Git.Tfs.Core
 
                 var commitSha = Commit(log);
                 UpdateTfsHead(commitSha, changeset.Summary.ChangesetId);
+                fetchResult.NewChangesetCount++;
+
                 StringBuilder metadatas = new StringBuilder();
                 if(changeset.Summary.Workitems.Any())
                 {
