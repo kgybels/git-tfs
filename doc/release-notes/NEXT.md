@@ -3,3 +3,4 @@
 * Add support of `.gitignore` to ignore files in `clone` and `init` commands (#897)
 * Improve branch point changeset detection (#1017 & #973, @fourpastmidnight & @jeremy-sylvis-tmg)
 * Add support for deleting TFS shelvesets using the shelve-delete command
+* Add support for Visual Studio 2017 (#1054, @fourpastmidnight)
