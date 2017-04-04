@@ -91,17 +91,18 @@ namespace Sep.Git.Tfs.Test.Integration
             {
                 c1 = g.Commit("A sample commit from TFS.\n\ngit-tfs-id: [http://server/tfs]$/MyProject/trunk;C" + ChangesetIdToTrickFetch);
                 g.CreateBranch("branch");
+                g.Checkout("branch");
                 c2 = g.Commit("A sample commit from TFS.\n\ngit-tfs-id: [http://server/tfs]$/MyProject/branch;C" + ChangesetIdToTrickFetch);
             });
 
             using (var repo = h.Repository("repo"))
             {
-                repo.Checkout("master");
+                LibGit2Sharp.Commands.Checkout(repo, "master");
                 h.AssertNoRef("repo", "tfs/default");
                 h.RunIn("repo", "fetch");
                 h.AssertRef("repo", "tfs/default", c1);
 
-                repo.Checkout("branch");
+                LibGit2Sharp.Commands.Checkout(repo, "branch");
                 h.AssertNoRef("repo", "tfs/branch");
                 h.RunIn("repo", "fetch");
                 h.AssertRef("repo", "tfs/branch", c2);
@@ -125,6 +126,7 @@ namespace Sep.Git.Tfs.Test.Integration
             {
                 c1 = g.Commit("A sample commit from TFS.\n\ngit-tfs-id: [http://server/tfs]$/MyProject/trunk;C" + ChangesetIdToTrickFetch);
                 g.CreateBranch("branch");
+                g.Checkout("branch");
                 c2 = g.Commit("A sample commit from TFS.\n\ngit-tfs-id: [http://server/tfs]$/MyProject/branch;C" + ChangesetIdToTrickFetch);
                 g.Checkout("master");
                 c3 = g.Commit("A sample commit from TFS.\n\ngit-tfs-id: [http://server/tfs]$/MyProject/trunk;C" + ChangesetIdToTrickFetch);

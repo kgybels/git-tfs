@@ -46,7 +46,9 @@ namespace Sep.Git.Tfs.Test.Integration
                     Directory.Delete(_workdir);
                     _workdir = null;
                 }
+#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
                 catch (Exception)
+#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                 {
                 }
             }
@@ -101,19 +103,19 @@ namespace Sep.Git.Tfs.Test.Integration
             public string Commit(string message, string filename = "README.txt")
             {
                 File.WriteAllText(Path.Combine(_repo.Info.WorkingDirectory, filename), message);
-                _repo.Stage(filename);
+                LibGit2Sharp.Commands.Stage(_repo, filename);
                 var committer = GetCommitter();
                 return _repo.Commit(message, committer, committer, new CommitOptions() { AllowEmptyCommit = true }).Id.Sha;
             }
 
             public void CreateBranch(string branchName)
             {
-                _repo.Checkout(_repo.CreateBranch(branchName));
+                _repo.CreateBranch(branchName);
             }
 
             public void Checkout(string commitishName)
             {
-                _repo.Checkout(commitishName);
+                LibGit2Sharp.Commands.Checkout(_repo, commitishName);
             }
 
             public string Merge(string branch)
